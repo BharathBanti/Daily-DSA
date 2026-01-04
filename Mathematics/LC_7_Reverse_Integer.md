@@ -7,10 +7,8 @@
 
 ## Problem Statement
 
-Given a signed 32-bit integer `x`, reverse its digits.
-
-If reversing `x` causes the value to go outside the signed 32-bit integer range  
-**[−2³¹, 2³¹ − 1]**, return `0`.
+Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
+Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
 
 ---
 
@@ -132,11 +130,9 @@ Copy code
 class Solution {
     public int reverse(int x) {
         int result = 0;
-
         while (x != 0) {
             int digit = x % 10;
             x /= 10;
-
             if (result > Integer.MAX_VALUE / 10 ||
                (result == Integer.MAX_VALUE / 10 && digit > 7)) {
                 return 0;
@@ -154,6 +150,50 @@ class Solution {
     }
 }
 
+````
 ---
 
-## Java Solution
+## JavaScript Solution
+
+```JavaScript
+var reverse = function(x) {
+    let result = 0;
+    const INT_MAX = 2147483647;
+    const INT_MIN = -2147483648;
+
+    while (x !== 0) {
+        let digit = x % 10;
+        x = Math.trunc(x / 10);
+
+        if (
+            result > Math.trunc(INT_MAX / 10) ||
+            (result === Math.trunc(INT_MAX / 10) && digit > 7)
+        ) {
+            return 0;
+        }
+
+        if (
+            result < Math.trunc(INT_MIN / 10) ||
+            (result === Math.trunc(INT_MIN / 10) && digit < -8)
+        ) {
+            return 0;
+        }
+
+        result = result * 10 + digit;
+    }
+
+    return result;
+};
+```
+---
+## Interview Traps
+
+- Reversing using strings instead of math operations
+
+- Forgetting to check overflow
+
+- Checking overflow after updating the result
+
+- Assuming negative numbers need special handling
+
+Interviewers care more about safe arithmetic than shortcuts.
